@@ -563,6 +563,7 @@ class TTSManager:
             filename = "tts_output.mp3"
             tts = gTTS(text=text, lang=lang)
             tts.save(filename)
+            await asyncio.sleep(0.2)
 
             vc = channel.guild.voice_client
             if not vc:
