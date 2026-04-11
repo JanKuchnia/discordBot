@@ -1,0 +1,7 @@
+discord.py
+python-dotenv
+ffmpeg-python
+yt-dlp
+requests
+beautifulsoup4
+gtts
