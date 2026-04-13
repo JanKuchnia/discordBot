@@ -63,6 +63,7 @@
 | `horda kiedy pavelos` | `tatus.mp3` |
 | `kuba femboy` | `kuba_femboy.mp3` |
 | `grecki pedal` | Stream z SoundCloud (gejtos) |
+| `mambo` | mambo |
 
 ### ⚖️ Timeout / Moderacja
 | Trigger | Akcja |
