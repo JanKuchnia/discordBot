@@ -283,6 +283,7 @@ CUSTOM_TEXT_TRIGGERS = {
     "spiderman":{"action": "play_spermaman"},
     "horda kiedy pavelos":{"action": "play_tatus"},
     "kuba femboy": {"action": "play_kuba_femboy"},
+    "mambo": {"action": "play_mambo"},
     "drzewo nds": "https://cdn.discordapp.com/attachments/1238095680959025163/1467948922684178564/drzewo.png?ex=69823d78&is=6980ebf8&hm=0dd65b10ff197d1008fb0f11d6123ebccec8a2c714db7c4982044aa0f4b0367c&",
 }
 
@@ -1315,6 +1316,41 @@ class CommandHandler:
             await message.channel.send(resp)
 
     @staticmethod
+    async def handle_mambo(message):
+        user_id = str(message.author.id)
+        on_cd, _ = CooldownManager.is_custom_trigger_on_cooldown(user_id, "mambo")
+        if on_cd: return
+        CooldownManager.update_custom_trigger_cooldown(user_id, "mambo")
+
+        if not message.author.voice: return
+
+        path = "mambo_mambo_uma_musume.mp3"
+        if not os.path.exists(path):
+            print(f"❌ Brak pliku: {path} w katalogu bota.")
+            return
+
+        if message.guild.voice_client:
+            try: await message.guild.voice_client.disconnect(force=True)
+            except: pass
+
+        try:
+            vc = await message.author.voice.channel.connect()
+            vc.play(discord.FFmpegPCMAudio(path, options="-vn -af volume=1.0"))
+            print(f"🤪 Gram mambo.mp3 dla: {message.author.name}")
+
+            while vc.is_playing():
+                await asyncio.sleep(1)
+            
+            await vc.disconnect()
+            
+        except Exception as e:
+            print(f"⚠️ Błąd podczas odtwarzania mambo: {e}")
+            if message.guild.voice_client:
+                try: await message.guild.voice_client.disconnect(force=True)
+                except: pass
+
+    
+    @staticmethod
     async def handle_dm_command(message):
         if not message.author.guild_permissions.administrator: return
         
@@ -1478,7 +1514,7 @@ class CommandHandler:
             special_actions = [
                 "pobudka_sequence", "play_muzyka_exact", "play_verstappen", "play_gejtos", 
                 "play_syrena", "play_za_gorami_za_lasami", "wycisz_eryk", "random_kick_voice", 
-                "play_crazy", "play_wojfer", "check_67_trigger","play_spermaman","play_tatus","play_kuba_femboy"
+                "play_crazy", "play_wojfer", "check_67_trigger","play_spermaman","play_tatus","play_kuba_femboy","play_mambo"
             ]
             
             # SPECJALNA OBSŁUGA DLA 67
@@ -1599,6 +1635,9 @@ class CommandHandler:
                     return True
                 if "play_kuba_femboy" in actions:
                     await CommandHandler.handle_kuba_femboy(message)
+                    return True
+                if "play_mambo" in actions:
+                    await CommandHandler.handle_mambo(message)
                     return True
                 
                 if "wycisz_eryk" in actions:
