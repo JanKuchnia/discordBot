@@ -2205,6 +2205,7 @@ async def on_voice_state_update(member, before, after):
 if __name__ == "__main__":
     load_dotenv()
     TOKEN = os.getenv('DISCORD_TOKEN')
+    print(f"Current Container Time: {time.strftime('%Y-%m-%d %H:%M:%S')}")
     try:
         if TOKEN: client.run(TOKEN)
         else: print("❌ Brak tokenu! Ustaw DISCORD_TOKEN w pliku .env")
